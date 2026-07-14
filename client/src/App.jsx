@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import './App.css'
 import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion'
 
@@ -6,6 +6,28 @@ function App() {
   const reduceMotion = useReducedMotion()
   const heroRef = useRef(null)
   const presentacionRef = useRef(null)
+  const [booking, setBooking] = useState({ nombre: '', telefono: '', servicio: '', fecha: '', mensaje: '' })
+  const [enviado, setEnviado] = useState(false)
+
+  const handleBookingChange = (e) => {
+    const { name, value } = e.target
+    setBooking((prev) => ({ ...prev, [name]: value }))
+  }
+
+  const handleBookingSubmit = (e) => {
+    e.preventDefault()
+    const subject = encodeURIComponent(`Solicitud de cita - ${booking.nombre}`)
+    const body = encodeURIComponent(
+      `Nombre: ${booking.nombre}\n` +
+      `Teléfono: ${booking.telefono}\n` +
+      `Servicio: ${booking.servicio}\n` +
+      `Fecha preferida: ${booking.fecha}\n` +
+      `Mensaje: ${booking.mensaje}`
+    )
+    window.location.href = `mailto:contacto@tallerpro.com?subject=${subject}&body=${body}`
+    setEnviado(true)
+  }
+
   const { scrollYProgress } = useScroll({
     target: heroRef,
     offset: ['start start', 'end start'],
@@ -59,16 +81,16 @@ function App() {
         }}
       >
         <div className="hero-content">
-          <h1>Tu auto en las<br />mejores manos</h1>
+          <h1>Tu coche en las<br />mejores manos</h1>
 
           <p className="hero-sub">
-            Cada auto que llega al taller trae su propia historia: un ruido nuevo,
+            Cada coche que llega al taller trae su propia historia: un ruido nuevo,
             un viaje por delante, kilómetros de recuerdos. Nosotros te ayudamos a
             seguir escribiéndola, con más de 15 años de experiencia y atención personalizada.
           </p>
 
           <div className="hero-actions">
-            <a href="tel:+5491100000000" className="btn-primary">
+            <a href="tel:+34912345678" className="btn-primary">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
                 <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.72 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.63 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.6a16 16 0 0 0 5.55 5.55l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21 16.92z"/>
               </svg>
@@ -107,7 +129,7 @@ function App() {
       className="services-section"
       initial="hidden"
       whileInView="visible"
-      viewport={{ amount: 0.2, once: true }}
+      viewport={{ amount: 0, once: false }}
     >
       <h2>Así seguimos tu historia</h2>
       <p className="services-sub">
@@ -119,7 +141,7 @@ function App() {
         className="services-grid"
         variants={{
           hidden: {},
-          visible: { transition: { staggerChildren: 0.2 } },
+          visible: { transition: { staggerChildren: 0.3 } },
         }}
       >
         {[
@@ -127,7 +149,7 @@ function App() {
             icon: <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>,
             iconClass: 'service-icon-accent',
             title: 'Mecánica general',
-            desc: 'Mantenimiento y reparación de motor: cuidamos el corazón de tu auto en cada visita.',
+            desc: 'Mantenimiento y reparación de motor: cuidamos el corazón de tu coche en cada visita.',
           },
           {
             icon: <path d="M13 2 3 14h7l-1 8 10-12h-7l1-8Z"/>,
@@ -139,7 +161,7 @@ function App() {
             icon: <><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M8 20h8M12 18v2"/></>,
             iconClass: 'service-icon-accent',
             title: 'Diagnóstico computarizado',
-            desc: 'Escaneo de precisión: descubrimos lo que tu auto no te puede contar.',
+            desc: 'Escaneo de precisión: descubrimos lo que tu coche no te puede contar.',
           },
           {
             icon: <><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/></>,
@@ -153,7 +175,7 @@ function App() {
             className="service-card"
             variants={{
               hidden: { opacity: 0, y: 40 },
-              visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.65, 0, 0.35, 1] } },
+              visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.65, 0, 0.35, 1] } },
             }}
           >
             <div className={`service-icon ${card.iconClass}`}>
@@ -168,19 +190,121 @@ function App() {
       </motion.div>
     </motion.section>
 
+    <motion.section
+      id="reserva"
+      className="booking-section"
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ amount: 0, once: false }}
+    >
+      <h2>Reserva tu cita</h2>
+      <p className="booking-sub">
+        Cuéntanos qué necesita tu coche y coordinamos el mejor horario para ti.
+      </p>
+
+      <motion.form
+        className="booking-form"
+        onSubmit={handleBookingSubmit}
+        variants={{
+          hidden: { opacity: 0, y: 40 },
+          visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.65, 0, 0.35, 1] } },
+        }}
+      >
+        <div className="form-row">
+          <div className="form-group">
+            <label htmlFor="nombre">Nombre</label>
+            <input
+              id="nombre"
+              name="nombre"
+              type="text"
+              placeholder="Tu nombre"
+              value={booking.nombre}
+              onChange={handleBookingChange}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="telefono">Teléfono</label>
+            <input
+              id="telefono"
+              name="telefono"
+              type="tel"
+              placeholder="+34 912 345 678"
+              value={booking.telefono}
+              onChange={handleBookingChange}
+              required
+            />
+          </div>
+        </div>
+
+        <div className="form-row">
+          <div className="form-group">
+            <label htmlFor="servicio">Servicio</label>
+            <select
+              id="servicio"
+              name="servicio"
+              value={booking.servicio}
+              onChange={handleBookingChange}
+              required
+            >
+              <option value="" disabled>Elige un servicio</option>
+              <option value="Mecánica general">Mecánica general</option>
+              <option value="Electricidad automotriz">Electricidad automotriz</option>
+              <option value="Diagnóstico computarizado">Diagnóstico computarizado</option>
+              <option value="Frenos y suspensión">Frenos y suspensión</option>
+              <option value="Otro">Otro</option>
+            </select>
+          </div>
+          <div className="form-group">
+            <label htmlFor="fecha">Fecha preferida</label>
+            <input
+              id="fecha"
+              name="fecha"
+              type="date"
+              value={booking.fecha}
+              onChange={handleBookingChange}
+              required
+            />
+          </div>
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="mensaje">Mensaje (opcional)</label>
+          <textarea
+            id="mensaje"
+            name="mensaje"
+            placeholder="Cuéntanos qué le pasa a tu coche"
+            rows={4}
+            value={booking.mensaje}
+            onChange={handleBookingChange}
+          />
+        </div>
+
+        <button type="submit" className="btn-primary booking-submit">
+          Solicitar cita
+        </button>
+
+        {enviado && (
+          <p className="booking-confirmation">
+            ¡Gracias! Te contactaremos a la brevedad para confirmar la cita.
+          </p>
+        )}
+      </motion.form>
+    </motion.section>
+
     <section id="contacto" className="contact-section">
       <h2>Empecemos el próximo capítulo</h2>
       <p className="contact-sub">
-        Contanos qué le pasa a tu auto y seguimos la historia juntos.
+        Cuéntanos qué le pasa a tu coche y seguimos la historia juntos.
         Te respondemos a la brevedad.
       </p>
 
       <div className="contact-grid">
-        <a href="tel:+5491100000000" className="contact-item">
+        <a href="tel:+34912345678" className="contact-item">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
             <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.72 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.63 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.6a16 16 0 0 0 5.55 5.55l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21 16.92z"/>
           </svg>
-          +54 9 11 0000-0000
+          +34 912 345 678
         </a>
         <a href="mailto:contacto@tallerpro.com" className="contact-item">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
@@ -195,7 +319,7 @@ function App() {
             <path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0 1 18 0Z"/>
             <circle cx="12" cy="10" r="3"/>
           </svg>
-          Av. Siempre Viva 742, Buenos Aires
+          Calle Mayor 15, 28013 Madrid
         </div>
       </div>
     </section>
