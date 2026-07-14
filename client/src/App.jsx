@@ -18,7 +18,7 @@ function App() {
   const videoRadius = useTransform(scrollYProgress, [0, 1], ['0px', '32px'])
   const videoOpacity = useTransform(scrollYProgress, [0, 1], [1, 0])
   const presentacionOpacity = useTransform(presentacionProgress, [0, 0.25, 0.75, 1], [0, 1, 1, 0])
-  const presentacionBlur = useTransform(presentacionProgress, [0, 0.6], [10, 0])
+  const presentacionBlur = useTransform(presentacionProgress, [0, 0.2], [10, 0])
   const presentacionFilter = useTransform(presentacionBlur, v => `blur(${v}px)`)
 
   return (
@@ -59,18 +59,12 @@ function App() {
         }}
       >
         <div className="hero-content">
-          <div className="hero-badge">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden="true">
-              <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
-            </svg>
-            Taller Mecánico
-          </div>
-
           <h1>Tu auto en las<br />mejores manos</h1>
 
           <p className="hero-sub">
-            Mecánica general, electricidad automotriz y diagnóstico computarizado.
-            Más de 15 años de experiencia con atención personalizada.
+            Cada auto que llega al taller trae su propia historia: un ruido nuevo,
+            un viaje por delante, kilómetros de recuerdos. Nosotros te ayudamos a
+            seguir escribiéndola, con más de 15 años de experiencia y atención personalizada.
           </p>
 
           <div className="hero-actions">
@@ -115,9 +109,10 @@ function App() {
       whileInView="visible"
       viewport={{ amount: 0.2, once: true }}
     >
-      <h2>Nuestros servicios</h2>
+      <h2>Así seguimos tu historia</h2>
       <p className="services-sub">
-        Todo lo que tu auto necesita, en un solo lugar.
+        Desde el primer diagnóstico hasta la última prueba en la calle,
+        te acompañamos en cada etapa del camino.
       </p>
 
       <motion.div
@@ -132,25 +127,25 @@ function App() {
             icon: <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>,
             iconClass: 'service-icon-accent',
             title: 'Mecánica general',
-            desc: 'Mantenimiento, reparación de motor y revisión completa de tu vehículo.',
+            desc: 'Mantenimiento y reparación de motor: cuidamos el corazón de tu auto en cada visita.',
           },
           {
             icon: <path d="M13 2 3 14h7l-1 8 10-12h-7l1-8Z"/>,
             iconClass: 'service-icon-accent-2',
             title: 'Electricidad automotriz',
-            desc: 'Diagnóstico y reparación de instalaciones eléctricas y baterías.',
+            desc: 'Diagnóstico y reparación eléctrica, para que ninguna luz se apague en el camino.',
           },
           {
             icon: <><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M8 20h8M12 18v2"/></>,
             iconClass: 'service-icon-accent',
             title: 'Diagnóstico computarizado',
-            desc: 'Escaneo con tecnología de punta para detectar fallas con precisión.',
+            desc: 'Escaneo de precisión: descubrimos lo que tu auto no te puede contar.',
           },
           {
             icon: <><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/></>,
             iconClass: 'service-icon-accent-2',
             title: 'Frenos y suspensión',
-            desc: 'Revisión y cambio de pastillas, discos, amortiguadores y más.',
+            desc: 'Pastillas, discos y amortiguadores: para que cada frenada sea segura.',
           },
         ].map((card) => (
           <motion.div
@@ -174,9 +169,10 @@ function App() {
     </motion.section>
 
     <section id="contacto" className="contact-section">
-      <h2>¿Hablamos?</h2>
+      <h2>Empecemos el próximo capítulo</h2>
       <p className="contact-sub">
-        Escribinos o acercate al taller, te respondemos a la brevedad.
+        Contanos qué le pasa a tu auto y seguimos la historia juntos.
+        Te respondemos a la brevedad.
       </p>
 
       <div className="contact-grid">
